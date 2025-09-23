@@ -2,7 +2,14 @@
 
 ## DUCUMENTACION DE LA APLICACION
 ***1.Una API (Interfaz de Programación de Aplicaciones) es un conjunto de reglas y protocolos que permite a dos aplicaciones de software comunicarse entre sí, actuando como un intermediario para intercambiar datos y funcionalidades.***
- >-Open Food Facts
+ >-APIs
+>- API de Spoonacular
+>- Open Food Facts
+>-  Food and Agriculture Organization (FAO)
+>-   API de Edamam
+>-   API de Nootric
+>-   API de Garmin Health
+
 
 
 ## objetivo
