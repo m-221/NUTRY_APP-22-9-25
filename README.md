@@ -18,7 +18,6 @@
 ### INTEGRANTES
 **melanie fernanda pedroza infante   y**  **mitzy esmeralda gonzales esparza** **3-d  unidad 1**
 
-![mitsy](https://github.com/user-attachments/assets/061a7d4b-9e0f-4cbf-9819-7e4b4d201575)
+![mitsy](https://github.com/user-attachments/assets/061a7d4b-9e0f-4cbf-9819-7e4b4d201575) ![my](https://github.com/user-attachments/assets/00bb44d7-2b80-4e9e-a066-6b384385dc42)
 
-![my](https://github.com/user-attachments/assets/00bb44d7-2b80-4e9e-a066-6b384385dc42)
 
