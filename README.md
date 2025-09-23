@@ -2,7 +2,7 @@
 
 ## DUCUMENTACION DE LA APLICACION
 ***1.Una API (Interfaz de Programación de Aplicaciones) es un conjunto de reglas y protocolos que permite a dos aplicaciones de software comunicarse entre sí, actuando como un intermediario para intercambiar datos y funcionalidades.***
- >-APIs
+ >-APIss
 >- API de Spoonacular
 >- Open Food Facts (gratis)
 >-  Food and Agriculture Organization (FAO)
