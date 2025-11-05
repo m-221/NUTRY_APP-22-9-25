@@ -1,22 +1,20 @@
 
 {% extends "index.html" %}
- {% block title %} <h1>Explora Nuestras Categorías de Recetas</h1> {% endblock %}
+{% block title %}<h1 class="text-center">BIENVENIDO A SABORES Y SABERES</h1>{% endblock %}
 {% block contenido %}
-    <div class="row">
-        <div class="col text-center">
-            <p>Descubre recetas organizadas por categorías para facilitar tu búsqueda.</p>
-        </div>
+        <div class="container-fluid bg-primary-subtle">
+            <div class="row">
+                <p class="text-center">En Sabores y Saberes, te ofrecemos una amplia variedad de recetas deliciosas y saludables, organizadas por categorías para facilitar tu búsqueda. Ya sea que busques opciones vegetarianas, platos rápidos o postres indulgentes, tenemos algo para todos los gustos. Explora nuestras recetas y encuentra inspiración para tu próxima comida saludable.</p>
+                <div class="col-6">
+        <img src="{{url_for('static', filename= 'img/ft.jpg')}}" class="rounded float-start p-3" alt="." weight="300" height="200">
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card mb-4">
-                <img src="https://via.placeholder.com/400x200" class="card-img-top" alt="Desayunos">
-                <div class="card-body">
-                    <h5 class="card-title">Desayunos</h5>
-                    <p class="card-text">Comienza tu día con energía con nuestras recetas de desayunos saludables y deliciosos.</p>
-                    <a href="#" class="btn btn-primary">Ver Desayunos</a>
-                </div>
-            </div>
-        </div>
+    <div class="col-6">
+        <img src="{{url_for('static', filename= 'img/ff.jpg')}}" class="rounded float-end p-3" alt="." weight="200" height="200">
     </div>
+    <div class="col-12">
+        <img src="{{url_for('static', filename= 'img/qam.jpg')}}" class="rounded mx-auto d-block p-3" alt="." weight="300" height="200">
+    </div>
+    </div>
+</div>
+
 {% endblock %}
