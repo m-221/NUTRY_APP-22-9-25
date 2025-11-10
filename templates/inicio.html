@@ -1,20 +1,25 @@
 
 {% extends "index.html" %}
-{% block title %}<h1 class="text-center">BIENVENIDO A SABORES Y SABERES</h1>{% endblock %}
+{% block title %}<h1 class="text-center">SABORES Y SABERES</h1>{% endblock %}
 {% block contenido %}
-        <div class="container-fluid bg-primary-subtle">
-            <div class="row">
-                <p class="text-center">En Sabores y Saberes, te ofrecemos una amplia variedad de recetas deliciosas y saludables, organizadas por categorías para facilitar tu búsqueda. Ya sea que busques opciones vegetarianas, platos rápidos o postres indulgentes, tenemos algo para todos los gustos. Explora nuestras recetas y encuentra inspiración para tu próxima comida saludable.</p>
+        <div class="container d-flex justify-content-center rounded-4 bg-light">
+          
+          <p>Nos alegra enormemente recibirte en este espacio creado con mucho cariño para ti. Aquí creemos que una buena alimentación no solo nutre el cuerpo, sino también el alma, y por eso queremos acompañarte en el camino hacia una vida más saludable, llena de energía, equilibrio y bienestar.
+
+Nuestra página está pensada para ofrecerte recomendaciones de alimentos deliciosos y nutritivos, fáciles de incorporar a tu día a día, sin sacrificar el sabor que tanto disfrutas. Cada platillo, cada consejo y cada ingrediente que compartimos ha sido seleccionado con la intención de ayudarte a mejorar tus hábitos alimenticios, descubrir nuevas combinaciones y conocer el valor que cada alimento tiene para tu salud.
+
+A lo largo de tu visita descubrirás recetas saludables, datos curiosos sobre los alimentos, consejos personalizados y herramientas que te ayudarán a cuidar de ti de una manera práctica y natural. Queremos que este sea un espacio donde aprendas, experimentes y disfrutes del placer de comer bien, reconectando con lo esencial: alimentarte con conciencia y amor.
+
+Gracias por confiar en nosotros y formar parte de esta comunidad. 🌾
+¡Esperamos que cada visita te inspire, te motive y te acerque un poco más a la mejor versión de ti mismo! </p>
+                <div class="row">
+        
                 <div class="col-6">
-        <img src="{{url_for('static', filename= 'img/ft.jpg')}}" class="rounded float-start p-3" alt="." weight="300" height="200">
-    </div>
-    <div class="col-6">
-        <img src="{{url_for('static', filename= 'img/ff.jpg')}}" class="rounded float-end p-3" alt="." weight="200" height="200">
-    </div>
-    <div class="col-12">
-        <img src="{{url_for('static', filename= 'img/qam.jpg')}}" class="rounded mx-auto d-block p-3" alt="." weight="300" height="200">
-    </div>
-    </div>
-</div>
+                    <img src="{{url_for('static', filename= 'img/frutas.webp')}}" class="rounded mx-auto d-block p-10" alt="comida" weight="500" height="550">
+                </div>
+                </div>
+
+        </div>
+
 
 {% endblock %}
