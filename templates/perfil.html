@@ -1,0 +1,26 @@
+{% extends "index.html" %}
+{% block title %}
+<h1 class="text-center mt-3">TU PERFIL EN SABORES Y SABERES</h1>
+{% endblock %}
+
+{% block contenido %}
+<div class="container my-4">
+    <div class="card shadow-lg p-4 rounded-4">
+        <h2 class="text-center mb-4">Detalles de tu perfil</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Nombre:</strong> {{ usuario.nombre }}</p>
+                <p><strong>Apellido:</strong> {{ usuario.apeido }}</p>
+                <p><strong>Fecha de nacimiento:</strong> {{ usuario.fecha }}</p>
+                <p><strong>Género:</strong> {{ usuario.genero }}</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Nivel de actividad:</strong> {{ usuario.actividad }}</p>
+                <p><strong>Peso:</strong> {{ usuario.peso }} kg</p>
+                <p><strong>Altura:</strong> {{ usuario.altura }} cm</p>
+                <p><strong>Email:</strong> {{ session.usuario }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

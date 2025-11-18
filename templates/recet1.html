@@ -1,0 +1,27 @@
+{% extends 'index.html'%} 
+{% block title %} {% endblock%}
+{% block contenido%}
+
+{% if recetas %}
+<h3 class="mt-4 fw-bold">Resultados:</h3>
+
+<div class="row">
+    {% for r in recetas %}
+    <div class="col-md-4 mt-3">
+        <div class="card shadow-sm">
+            <img src="{{ r.image }}" class="card-img-top" alt="imagen receta">
+            <div class="card-body">
+                <h5 class="card-title">{{ r.title }}</h5>
+
+                <a href="https://spoonacular.com/recipes/{{ r.title | replace(' ', '-') }}-{{ r.id }}"
+                   class="btn btn-primary w-100" target="_blank">
+                    Ver receta
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% endblock %}

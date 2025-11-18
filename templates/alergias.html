@@ -1,0 +1,71 @@
+{% extends 'index.html' %}
+{% block title %}Alergias{% endblock %}
+
+{% block contenido %}
+
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card shadow-lg p-4 rounded-4 col-md-8">
+
+        <h2 class="text-center mb-4 fw-bold">Búsqueda por Alergias</h2>
+
+        <form method="POST" action="/recet1" class="row g-3">
+
+            <div class="col-12">
+                <label for="inputAlergias" class="form-label fw-semibold">Alergias alimentarias</label>
+                <input type="text" name="alergias" class="form-control" id="inputAlergias"
+                    placeholder="Ejemplo: gluten, lácteos, nueces">
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputPreferencias" class="form-label fw-semibold">Preferencias de comida</label>
+                <select name="preferencias" id="inputPreferencias" class="form-select">
+                    <option selected>Seleccionar...</option>
+                    <option>Vegetariana</option>
+                    <option>Vegana</option>
+                    <option>Alta en proteína</option>
+                    <option>Baja en carbohidratos</option>
+                    <option>Sin azúcar</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="inputTipoBusqueda" class="form-label fw-semibold">¿Qué deseas buscar?</label>
+                <select name="tipo_busqueda" id="inputTipoBusqueda" class="form-select">
+                    <option selected>Seleccionar...</option>
+                    <option>Recetas</option>
+                    <option>Ingredientes permitidos</option>
+                    <option>Alimentos que debo evitar</option>
+                    <option>Plan de comidas</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label for="inputBuscar" class="form-label fw-semibold">Búsqueda específica</label>
+                <input type="text" name="termino" class="form-control" id="inputBuscar"
+                    placeholder="Ejemplo: postres sin azúcar, comidas sin gluten...">
+            </div>
+
+            <div class="col-12 mt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="guardar" id="gridCheck">
+                    <label class="form-check-label" for="gridCheck">
+                        Deseo guardar mis preferencias
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                    Buscar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+
+
+
+{% endblock %}

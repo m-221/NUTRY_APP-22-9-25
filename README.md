@@ -22,7 +22,8 @@
     <img src="{{url_for('static', filename= 'img/ft.jpg')}}" class="rounded float-start p-3" alt="comida" weight="300" height="350">
                 </div>
                 
-                <div class="fondo-pagina d-flex flex-column justify-content-center align-items-center text-center text-light">
-    <p class="lead">Encuentra la receta perfecta para cada ocasión. Mejora tu salud a través de la alimentación.</p>
-    <textarea class="form-control w-50 mt-3 bg-transparent text-light border-light"
-              rows="4" placeholder="Escribe aquí..."></textarea>
+         
+
+
+
+      
