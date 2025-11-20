@@ -60,7 +60,7 @@ def iniciar_sesion():
         email = request.form.get('email')
         password = request.form.get('password')
 
-        # Verificamos que el usuario exista y la contraseña coincida
+
         if email in usuarios and usuarios[email]["password"] == password:
             session['usuario'] = email
             session['nombre'] = usuarios[email]["nombre"]
@@ -86,7 +86,7 @@ def perfil():
 
 @app.route('/buscar', methods=['POST'])
 def buscar():
-    consulta = request.form.get('consulta')  # nombre del input en tu formulario
+    consulta = request.form.get('consulta')  
 
     params = {
         'apiKey': API_KEY,
@@ -290,6 +290,30 @@ def logout():
     session.pop("nombre", None)
     flash("Has cerrado sesión correctamente")
     return redirect(url_for("inicio"))
+
+
+@app.route('/calcular', methods=['POST'])
+def calcular():
+    try:
+        peso = float(request.form['peso'])
+        altura = float(request.form['altura']) / 100 
+        imc = peso / (altura ** 2)
+        imc = round(imc, 2)
+
+        if imc < 18.5:
+            clasificacion = "Bajo peso"
+        elif 18.5 <= imc < 25:
+            clasificacion = "Normal"
+        elif 25 <= imc < 30:
+            clasificacion = "Sobrepeso"
+        else:
+            clasificacion = "Obesidad"
+
+        return render_template('resultado.html', imc=imc, clasificacion=clasificacion)
+    
+    except:
+        return "Error: revisa los valores ingresados"
+
 
 
 if __name__ == '__main__':
