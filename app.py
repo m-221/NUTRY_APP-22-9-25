@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 import requests
+import json
+import os
 
 app = Flask(__name__)
 app.secret_key = 'melyyyyaaasdwwd'
@@ -7,36 +9,45 @@ app.secret_key = 'melyyyyaaasdwwd'
 API_URL = 'https://api.spoonacular.com/recipes/complexSearch'
 API_KEY = '923b514b2c604404954302eaebfea6fd'
 
+USUARIOS_FILE = "usuarios.json"
 
-usuarios = {}
+if os.path.exists(USUARIOS_FILE):
+    with open(USUARIOS_FILE, "r") as f:
+        usuarios = json.load(f)
+else:
+    usuarios = {}
 
-@app.route('/')
+
+@app.route('/', methods=['GET', 'POST'])
 def inicio():
-    return render_template('inicio.html')
+    nombre = session.get("nombre")
+    return render_template('inicio.html', nombre=nombre)
 
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
-    if request.method == 'POST':   
+    if request.method == 'POST':
+
+     
         nombre = request.form.get('nombre')
-        apeido = request.form.get('apeido')
+        apellido = request.form.get('apeido')  
         dia = request.form.get('dia')
         mes = request.form.get('mes')
         anio = request.form.get('anio')
         genero = request.form.get('genero')
-        email = request.form.get('exampleInputEmail1')
-        password = request.form.get('exampleInputPassword1')
+        email = request.form.get('exampleInputEmail1')  
+        password = request.form.get('exampleInputPassword1') 
         actividad = request.form.get('nivelactividad')
         peso = request.form.get('peso')
         altura = request.form.get('altura')
 
         if email in usuarios:
-            flash("El correo ya está registrado, intenta iniciar sesión.")
-            return redirect("/iniciar_sesion")
+            flash("El correo ya está registrado. Intenta iniciar sesión.")
+            return redirect('/iniciar_sesion')
 
         usuarios[email] = {
             "nombre": nombre,
-            "apeido": apeido,
+            "apellido": apellido,
             "fecha": f"{dia}/{mes}/{anio}",
             "genero": genero,
             "password": password,
@@ -45,209 +56,61 @@ def registro():
             "altura": altura
         }
 
-        session["usuario"] = email
-        session["nombre"] = nombre
-
-        flash(f"Registro exitoso ¡Bienvenido a Sabores y Saberes {nombre}!")
-        return redirect("/perfil")
-
-    return render_template('formulario.html')
-
-
-@app.route('/iniciar_sesion', methods=['GET', 'POST'])
-def iniciar_sesion():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-
-
-        if email in usuarios and usuarios[email]["password"] == password:
-            session['usuario'] = email
-            session['nombre'] = usuarios[email]["nombre"]
-            flash('Inicio de sesión exitoso', 'success')
-            return redirect(url_for('perfil'))
-        else:
-            flash('Usuario o contraseña incorrectos', 'error')
-            return redirect(url_for('iniciar_sesion'))
-
-    return render_template("iniciar_sesion.html")
-
-
-@app.route('/perfil')
-def perfil():
-    if not session.get("usuario"):
-        flash("Debes iniciar sesión para acceder a tu perfil.")
-        return redirect("/iniciar_sesion")
-    
-    email = session["usuario"]
-    usuario = usuarios[email]
-
-    return render_template('perfil.html', usuario=usuario)
-
-@app.route('/buscar', methods=['POST'])
-def buscar():
-    consulta = request.form.get('consulta')  
-
-    params = {
-        'apiKey': API_KEY,
-        'query': consulta,
-        'number': 16, 
-        'addRecipeInformation': True
-    }
-
-    response = requests.get(API_URL, params=params)
-    data = response.json()
-
-    recetas = data.get("results", [])
-
-    return render_template('recetas.html', recetas=recetas)
-
-
-
-from flask import Flask, render_template, request, redirect, session, url_for, flash, jsonify
-import requests
-
-app = Flask(__name__)
-app.secret_key = 'melyyyyaaasdwwd'
-
-API_URL = 'https://api.spoonacular.com/recipes/complexSearch'
-API_KEY = '923b514b2c604404954302eaebfea6fd'
-
-usuarios = {}
-
-
-@app.route('/')
-def inicio():
-    return render_template('inicio.html')
-
-
-@app.route('/registro', methods=['GET', 'POST'])
-def registro():
-    if request.method == 'POST':
-
-        nombre = request.form.get('nombre')
-        apeido = request.form.get('apeido')
-        dia = request.form.get('dia')
-        mes = request.form.get('mes')
-        anio = request.form.get('anio')
-        genero = request.form.get('genero')
-        email = request.form.get('exampleInputEmail1')
-        password = request.form.get('exampleInputPassword1')
-        actividad = request.form.get('nivelactividad')
-        peso = request.form.get('peso')
-        altura = request.form.get('altura')
-
-        if email in usuarios:
-            flash("El correo ya está registrado, intenta iniciar sesión.")
-            return redirect("/login")
-
-        usuarios[email] = {
-            "nombre": nombre,
-            "apeido": apeido,
-            "fecha": f"{dia}/{mes}/{anio}",
-            "genero": genero,
-            "password": password,
-            "actividad": actividad,
-            "peso": peso,
-            "altura": altura
-        }
+      
+        with open(USUARIOS_FILE, "w") as f:
+            json.dump(usuarios, f, indent=4)
 
         session["usuario"] = email
         session["nombre"] = nombre
 
-        flash(f"Registro exitoso ¡Bienvenido a Sabores y Saberes {nombre}!")
-        return redirect("/perfil")
-
-    return render_template('formulario.html')
-
-
-@app.route('/iniciar_sesion', methods=['GET', 'POST'])
-def iniciar_sesion():
-    return render_template("iniciar_sesion.html")
-
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == "POST":
-
-        email = request.form.get("email")
-        password = request.form.get("password")
-
-        if email not in usuarios:
-            flash("El usuario no existe")
-            return redirect("/iniciar_sesion")
-
-        if usuarios[email]["password"] != password:
-            flash("Contraseña incorrecta")
-            return redirect("/iniciar_sesion")
-
-        session["usuario"] = email
-        session["nombre"] = usuarios[email]["nombre"]
-
-        flash("Inicio de sesión exitoso")
+        flash(f"Registro exitoso. ¡Bienvenido {nombre}!")
         return redirect("/")
 
+    return render_template("formulario.html")
+
+
+@app.route('/iniciar_sesion')
+def iniciar_sesion():
     return render_template("iniciar_sesion.html")
 
 
-@app.route('/alergias', methods=['GET', 'POST'])
-def alergias():
+@app.route('/login', methods=['POST'])
+def login():
 
-    if request.method == 'POST':
+ 
+    email = request.form.get("email")
+    password = request.form.get("password")
 
-        alergias_u = request.form.get('alergias')
-        preferencias = request.form.get('preferencias')
-        termino = request.form.get('termino')
+    if email not in usuarios:
+        flash("El usuario no existe.")
+        return redirect("/iniciar_sesion")
 
-        if not termino:
-            flash("Debes escribir una búsqueda específica.", "error")
-            return redirect(url_for('alergias'))
+    if usuarios[email]["password"] != password:
+        flash("Contraseña incorrecta.")
+        return redirect("/iniciar_sesion")
 
-        dietas = {
-            "Vegetariana": "vegetarian",
-            "Vegana": "vegan",
-            "Alta en proteína": "high-protein",
-            "Baja en carbohidratos": "low-carb",
-            "Sin azúcar": "low-sugar"
-        }
-        dieta_api = dietas.get(preferencias)
+    session["usuario"] = email
+    session["nombre"] = usuarios[email]["nombre"]
 
-        params = {
-            "apiKey": API_KEY,
-            "query": termino,
-            "intolerances": alergias_u,
-            "diet": dieta_api,
-            "number": 16
-        }
-
-        respuesta = requests.get(API_URL, params=params)
-        data = respuesta.json()
-        recetas = data.get("results", [])
-
-        return render_template(
-            'alergias.html',
-            mensaje="Búsqueda realizada exitosamente",
-            recetas=recetas
-        )
-
-    return render_template('alergias.html')
-
-
-@app.route('/recet1', methods=['POST', 'GET'])
-def recet1():
-    return render_template('recet1.html')
+    flash("Inicio de sesión exitoso.")
+    return redirect("/perfil")
 
 
 @app.route('/perfil')
 def perfil():
-    if not session.get("usuario"):
-        flash("Debes iniciar sesión para acceder a tu perfil.")
-        return redirect("/login")
+    if "usuario" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/iniciar_sesion")
 
-    email = session["usuario"]
-    usuario = usuarios[email]
+    usuario = usuarios[session["usuario"]]
+    return render_template("perfil.html", usuario=usuario)
 
-    return render_template('perfil.html', usuario=usuario)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash("Has cerrado sesión correctamente.")
+    return redirect("/")
 
 
 @app.route('/buscar', methods=['GET', 'POST'])
@@ -270,52 +133,130 @@ def buscar():
     return render_template("buscar.html")
 
 
-@app.route("/logout")
-def logout():
-    session.pop("usuario", None)
-    session.pop("nombre", None)
-    flash("Has cerrado sesión correctamente")
-    return redirect(url_for("inicio"))
+@app.route('/alergias', methods=['GET', 'POST'])
+def alergias():
+
+    if request.method == 'POST':
+
+        alergias_u = request.form.get('alergias')
+        preferencias = request.form.get('preferencias')
+        termino = request.form.get('termino')
+
+        if not termino:
+            flash("Debes escribir una búsqueda.", "error")
+            return redirect(url_for('alergias'))
+
+        dietas = {
+            "Vegetariana": "vegetarian",
+            "Vegana": "vegan",
+            "Alta en proteína": "high-protein",
+            "Baja en carbohidratos": "low-carb",
+            "Sin azúcar": "low-sugar"
+        }
+
+        params = {
+            "apiKey": API_KEY,
+            "query": termino,
+            "intolerances": alergias_u,
+            "diet": dietas.get(preferencias),
+            "number": 16
+        }
+
+        respuesta = requests.get(API_URL, params=params)
+        resultados = respuesta.json().get("results", [])
+
+        return render_template("alergias.html", recetas=resultados)
+
+    return render_template("alergias.html")
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
-
-
-@app.route("/logout")
-def logout():
-    session.pop("usuario", None)
-    session.pop("nombre", None)
-    flash("Has cerrado sesión correctamente")
-    return redirect(url_for("inicio"))
-
-
-@app.route('/calcular', methods=['POST'])
+@app.route('/calcular', methods=['GET', 'POST'])
 def calcular():
+
+ 
+    if request.method == 'GET':
+        return render_template("imc.html")
+
     try:
         peso = float(request.form['peso'])
-        altura = float(request.form['altura']) / 100 
-        imc = peso / (altura ** 2)
-        imc = round(imc, 2)
+        altura = float(request.form['altura']) / 100
+        imc = round(peso / (altura ** 2), 2)
 
         if imc < 18.5:
-            clasificacion = "Bajo peso"
-        elif 18.5 <= imc < 25:
-            clasificacion = "Normal"
-        elif 25 <= imc < 30:
-            clasificacion = "Sobrepeso"
+            clas = "Bajo peso"
+        elif imc < 25:
+            clas = "Normal"
+        elif imc < 30:
+            clas = "Sobrepeso"
         else:
-            clasificacion = "Obesidad"
+            clas = "Obesidad"
 
-        return render_template('resultado.html', imc=imc, clasificacion=clasificacion)
-    
+        return render_template('imc.html', imc=imc, clasificacion=clas)
+
     except:
-        return "Error: revisa los valores ingresados"
+        flash("Error: revisa los datos ingresados.", "error")
+        return redirect("/calcular")
+    
 
+@app.route('/tmb', methods=['GET', 'POST'])
+def tmb():
+    if request.method == "GET":
+        return render_template("tmb.html")
+
+    try:
+        sexo = request.form.get("sexo")
+        edad = int(request.form.get("edad"))
+        peso = float(request.form.get("peso"))
+        altura = float(request.form.get("altura"))
+
+        if sexo == "hombre":
+            tmb = 88.36 + (13.4 * peso) + (4.8 * altura) - (5.7 * edad)
+        else:
+            tmb = 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * edad)
+
+        tmb = round(tmb, 2)
+
+        return render_template("tmb.html", tmb=tmb)
+
+    except:
+        return "Error: revisa los datos ingresados."
+    
+
+
+@app.route('/peso_ideal', methods=['POST', 'GET'])
+def peso_ideal():
+    if request.method == 'GET':
+        return render_template('psoideal.html')
+
+    try:
+        altura = float(request.form['altura'])
+        sexo = request.form['sexo']
+
+        if altura <= 0:
+            flash("La altura debe ser un número positivo.")
+            return redirect(url_for('peso_ideal'))
+
+  
+        if sexo == 'hombre':
+            peso_ideal = 50 + 2.3 * ((altura - 152) / 2.54)
+        elif sexo == 'mujer':
+            peso_ideal = 45.5 + 2.3 * ((altura - 152) / 2.54)
+        else:
+            flash("Selecciona un sexo válido.")
+            return redirect(url_for('peso_ideal'))
+
+        peso_ideal = round(peso_ideal, 2)
+
+        return render_template('psoideal.html', resultado=peso_ideal)
+
+    except ValueError:
+        flash("Ingresa valores numéricos válidos.")
+        return redirect(url_for('peso_ideal'))
+
+
+
+    
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-

@@ -1,0 +1,42 @@
+{% extends 'base.html'%} 
+{% block titulo %}Calculadora de IMC{% endblock %}
+{% block contenido%}
+<div class="container my-5">
+    <div class="card shadow-lg p-4 col-6 bg-success-subtle rounded-4 mx-auto" style="">
+        <h2 class="text-center mb-4 fw-bold">Calculadora de IMC</h2>
+
+        <form method="POST" action="/calcular">
+
+            <div class="mb-3">
+                <label for="peso" class="form-label">Peso (kg)</label>
+                <input type="number" class="form-control rounded-4" id="peso" name="peso" step="0.01" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="altura" class="form-label">Altura (cm)</label>
+                <input type="number" class="form-control rounded-4" id="altura" name="altura" step="0.01" min="0" required>
+            </div>
+
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-success btn-lg rounded-4">
+                    Calcular IMC
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% if imc is defined and clasificacion is defined %}
+<div class="container  my-4">
+    <div class="alert  alert-danger text-center" role="alert">
+        <h4>Tu IMC es: {{ imc }}</h4>
+        <p>Clasificación: {{ clasificacion }}</p>
+    </div>
+</div>
+{% endif %}
+
+
+
+
+{% endblock %}
