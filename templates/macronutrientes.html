@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<div class="container mt-4">
+
+    <div class="card p-4">
+        <h2 class="text-center mb-4">Calculadora de Macronutrientes</h2>
+
+        <form action="/macronutrientes" method="POST">
+
+            <div class="mb-3">
+                <label class="form-label">Calorías diarias:</label>
+                <input type="number" class="form-control" name="calorias" min="1" placeholder="Ejemplo: 2000" required>
+            </div>
+
+            <button class="btn w-100 mt-2" type="submit">Calcular</button>
+        </form>
+</div>
+{% if calorias is defined %}
+<div class="container my-4">
+    <div class="alert alert-danger text-center" role="alert">
+        <h4>
+            Resultados para {{ calorias }} calorías:<br><br>
+            Proteínas: <strong>{{ proteina }} g</strong><br>
+            Carbohidratos: <strong>{{ carbos }} g</strong><br>
+            Grasas: <strong>{{ grasas }} g</strong>
+        </h4>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}
