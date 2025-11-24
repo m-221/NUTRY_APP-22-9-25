@@ -8,5 +8,15 @@
         "actividad": "moderado",
         "peso": "333",
         "altura": "453"
+    },
+    "jsoltero236@gmail.com": {
+        "nombre": "Diana",
+        "apellido": "infante",
+        "fecha": "7/9/1991",
+        "genero": "Mujer",
+        "password": "6565922439",
+        "actividad": "ligero",
+        "peso": "100",
+        "altura": "1.5"
     }
 }

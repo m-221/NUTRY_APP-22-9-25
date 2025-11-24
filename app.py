@@ -62,6 +62,10 @@ def registro():
 
         session["usuario"] = email
         session["nombre"] = nombre
+        session['genero'] = genero
+        session['actividad'] = actividad
+        session['peso'] = peso
+        session['altura'] = altura
 
         flash(f"Registro exitoso. ¡Bienvenido {nombre}!")
         return redirect("/")
@@ -72,6 +76,10 @@ def registro():
 @app.route('/iniciar_sesion')
 def iniciar_sesion():
     return render_template("iniciar_sesion.html")
+
+@app.route('/educacion')
+def educacion():
+    return render_template("educacion.html")
 
 
 @app.route('/login', methods=['POST'])
@@ -223,6 +231,38 @@ def tmb():
     
 
 
+
+
+@app.route('/macronutrientes', methods=['POST', 'GET'])
+def macro():
+    if request.method == 'POST':
+        calorias = float(request.form['calorias'])
+
+    
+        p_prot = 0.30
+        p_carb = 0.40
+        p_grasa = 0.30
+
+        proteina = round((calorias * p_prot) / 4, 2)
+        carbos = round((calorias * p_carb) / 4, 2)
+        grasas = round((calorias * p_grasa) / 9, 2)
+
+        return render_template(
+            'macronutrientes.html',
+            calorias=calorias,
+            proteina=proteina,
+            carbos=carbos,
+            grasas=grasas
+        )
+    if "usuario" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/iniciar_sesion")
+
+    return render_template('macronutrientes.html')
+
+    
+
+
 @app.route('/peso_ideal', methods=['POST', 'GET'])
 def peso_ideal():
     if request.method == 'GET':
@@ -252,6 +292,19 @@ def peso_ideal():
     except ValueError:
         flash("Ingresa valores numéricos válidos.")
         return redirect(url_for('peso_ideal'))
+
+
+@app.route('/gct', methods=['POST', 'GET'])
+def gct():
+    if request.method == 'POST':
+        tmb = float(request.form['tmb'])  
+        actividad = float(request.form['actividad'])
+
+        gct = round(tmb * actividad, 2)
+
+        return render_template('gct.html', gct=gct, tmb=tmb)
+
+    return render_template('gct.html')
 
 
 
