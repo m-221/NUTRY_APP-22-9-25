@@ -81,6 +81,14 @@ def iniciar_sesion():
 def educacion():
     return render_template("educacion.html")
 
+@app.route('/descargables')
+def descargables():
+    if "usuario" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/iniciar_sesion")
+
+    return render_template("descargables.html")
+
 
 @app.route('/login', methods=['POST'])
 def login():
