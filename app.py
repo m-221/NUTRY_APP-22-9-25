@@ -6,8 +6,31 @@ import os
 app = Flask(__name__)
 app.secret_key = 'melyyyyaaasdwwd'
 
-API_URL = 'https://api.spoonacular.com/recipes/complexSearch'
+API_URL = 'https://api.spoonacular.com/recipes/findByIngredients'
 API_KEY = '923b514b2c604404954302eaebfea6fd'
+
+
+
+def recetas_por_ingredientes(ingredientes):
+    params = {
+        "apiKey": API_KEY,
+        "ingredients": ingredientes,  
+        "number": 15,
+        "ranking": 1,                
+        "ignorePantry": True   
+    }      
+
+    respuesta = requests.get(API_URL, params=params)
+
+    if respuesta.status_code != 200:
+        return []
+
+    return respuesta.json()  
+
+
+
+
+
 
 USUARIOS_FILE = "usuarios.json"
 
@@ -16,6 +39,7 @@ if os.path.exists(USUARIOS_FILE):
         usuarios = json.load(f)
 else:
     usuarios = {}
+
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -120,25 +144,37 @@ def logout():
     flash("Has cerrado sesión correctamente.")
     return redirect("/")
 
+@app.route('/resultado', methods=['GET','POST'])
+def resultado():
+    return render_template("resultado.html")
 
-@app.route('/buscar', methods=['GET', 'POST'])
+@app.route('/buscar', methods=['GET','POST'])
 def buscar():
-    if request.method == 'POST':
-        ingrediente = request.form.get('ingrediente')
-
-        params = {
-            'apiKey': API_KEY,
-            'query': ingrediente,
-            'number': 10
-        }
-
-        respuesta = requests.get(API_URL, params=params)
-        datos = respuesta.json()
-        recetas = datos.get("results", [])
-
-        return render_template("buscar.html", recetas=recetas)
-
+    if "usuario" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/iniciar_sesion")
     return render_template("buscar.html")
+
+
+@app.route('/buscador', methods=['GET'])
+def buscar_ingredientes():
+    
+    
+    ingredientes = request.args.get("ingredientes", "")
+  
+
+    if ingredientes.strip() == "":
+        return render_template("buscar.html", error="Escribe uno o más ingredientes.")
+    
+
+    recetas = recetas_por_ingredientes(ingredientes)
+
+   
+
+    return render_template("resultado.html",recetas=recetas,ingredientes=ingredientes)
+
+
+
 
 
 @app.route('/alergias', methods=['GET', 'POST'])
