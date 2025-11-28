@@ -6,10 +6,9 @@ import os
 app = Flask(__name__)
 app.secret_key = 'melyyyyaaasdwwd'
 
-API_URL = 'https://api.spoonacular.com/recipes/findByIngredients'
+
 API_KEY = '923b514b2c604404954302eaebfea6fd'
-
-
+API_URL = 'https://api.spoonacular.com/recipes/findByIngredients'
 
 def recetas_por_ingredientes(ingredientes):
     params = {
@@ -26,10 +25,6 @@ def recetas_por_ingredientes(ingredientes):
         return []
 
     return respuesta.json()  
-
-
-
-
 
 
 USUARIOS_FILE = "usuarios.json"
@@ -52,7 +47,7 @@ def inicio():
 def registro():
     if request.method == 'POST':
 
-     
+    
         nombre = request.form.get('nombre')
         apellido = request.form.get('apeido')  
         dia = request.form.get('dia')
@@ -80,7 +75,7 @@ def registro():
             "altura": altura
         }
 
-      
+    
         with open(USUARIOS_FILE, "w") as f:
             json.dump(usuarios, f, indent=4)
 
@@ -106,10 +101,22 @@ def educacion():
     return render_template("educacion.html")
 
 
+@app.route('/descargables')
+def descargables():
+    if "usuario" not in session:
+        flash("Debes iniciar sesión primero.")
+        return redirect("/iniciar_sesion")
+
+    return render_template("descargables.html")
+
+
+
+
+
 @app.route('/login', methods=['POST'])
 def login():
 
- 
+
     email = request.form.get("email")
     password = request.form.get("password")
 
@@ -150,74 +157,26 @@ def resultado():
 
 @app.route('/buscar', methods=['GET','POST'])
 def buscar():
-    if "usuario" not in session:
-        flash("Debes iniciar sesión primero.")
-        return redirect("/iniciar_sesion")
     return render_template("buscar.html")
-
 
 @app.route('/buscador', methods=['GET'])
 def buscar_ingredientes():
     
-    
     ingredientes = request.args.get("ingredientes", "")
-  
-
     if ingredientes.strip() == "":
         return render_template("buscar.html", error="Escribe uno o más ingredientes.")
-    
 
     recetas = recetas_por_ingredientes(ingredientes)
-
-   
 
     return render_template("resultado.html",recetas=recetas,ingredientes=ingredientes)
 
 
 
 
-
-@app.route('/alergias', methods=['GET', 'POST'])
-def alergias():
-
-    if request.method == 'POST':
-
-        alergias_u = request.form.get('alergias')
-        preferencias = request.form.get('preferencias')
-        termino = request.form.get('termino')
-
-        if not termino:
-            flash("Debes escribir una búsqueda.", "error")
-            return redirect(url_for('alergias'))
-
-        dietas = {
-            "Vegetariana": "vegetarian",
-            "Vegana": "vegan",
-            "Alta en proteína": "high-protein",
-            "Baja en carbohidratos": "low-carb",
-            "Sin azúcar": "low-sugar"
-        }
-
-        params = {
-            "apiKey": API_KEY,
-            "query": termino,
-            "intolerances": alergias_u,
-            "diet": dietas.get(preferencias),
-            "number": 16
-        }
-
-        respuesta = requests.get(API_URL, params=params)
-        resultados = respuesta.json().get("results", [])
-
-        return render_template("alergias.html", recetas=resultados)
-
-    return render_template("alergias.html")
-
-
 @app.route('/calcular', methods=['GET', 'POST'])
 def calcular():
 
- 
+
     if request.method == 'GET':
         return render_template("imc.html")
 
@@ -312,7 +271,7 @@ def peso_ideal():
             flash("La altura debe ser un número positivo.")
             return redirect(url_for('peso_ideal'))
 
-  
+
         if sexo == 'hombre':
             peso_ideal = 50 + 2.3 * ((altura - 152) / 2.54)
         elif sexo == 'mujer':
